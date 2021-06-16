@@ -4,6 +4,9 @@ import org.apache.spark.SparkConf
 import org.apache.spark.streaming._
 import org.apache.spark.streaming.StreamingContext
 
+/**
+ * 统计每一个批次当前的词频
+ */
 object NetworkWordCount {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf() setMaster ("local[*]") setAppName ("NetworkWordCount")

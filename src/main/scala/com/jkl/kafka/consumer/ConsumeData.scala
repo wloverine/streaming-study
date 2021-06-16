@@ -21,7 +21,7 @@ object ConsumeData {
 
 
     val kafkaParams = Map[String, Object](
-      "bootstrap.servers" -> "172.17.4.178:9092",
+      "bootstrap.servers" -> "localhost:9092",
       "key.deserializer" -> classOf[StringDeserializer],
       "value.deserializer" -> classOf[StringDeserializer],
       "auto.offset.reset" -> "earliest",
