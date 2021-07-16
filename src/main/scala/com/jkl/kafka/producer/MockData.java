@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
-/** 
+/**
  * 模拟数据，生成json格式的用户下单数据
  */
 public class MockData {
@@ -35,6 +35,7 @@ public class MockData {
 
         for (int i = 0; i < 1000; i++) {
             int order_id = i + 1;
+            System.out.println("order_id:" + order_id);
             String itemId = item_list.get(RandomUtil.randomInt(0, 5)).getItemId();
             String itemName = item_list.get(RandomUtil.randomInt(0, 5)).getItemName();
             Double itemPrice = item_list.get(RandomUtil.randomInt(0, 5)).getItemPrice();

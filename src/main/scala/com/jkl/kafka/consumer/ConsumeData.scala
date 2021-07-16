@@ -9,6 +9,7 @@ import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.apache.spark.{SparkConf, SparkContext}
 
 import java.sql.{Connection, DriverManager}
+import scala.util.Try
 
 /**
  * 消费kafka数据，存储到docker中的mariadb
@@ -37,17 +38,21 @@ object ConsumeData {
     )
 
     stream.map(record => {
-      val v = record.value()
-      val jsonObj = JSONUtil.parseObj(v)
+      Try {
+        val v = record.value()
+        val jsonObj = JSONUtil.parseObj(v)
 
-      val orderId = jsonObj.getInt("orderId")
-      val itemId = jsonObj.getStr("itemId")
-      val itemName = jsonObj.getStr("itemName")
-      val itemPrice = jsonObj.getDouble("itemPrice")
-      val userName = jsonObj.getStr("userName")
-      val orderTime = jsonObj.getStr("orderTime")
-      (orderId, itemId, itemName, itemPrice, userName, orderTime)
+        val orderId = jsonObj.getInt("orderId")
+        val itemId = jsonObj.getStr("itemId")
+        val itemName = jsonObj.getStr("itemName")
+        val itemPrice = jsonObj.getDouble("itemPrice")
+        val userName = jsonObj.getStr("userName")
+        val orderTime = jsonObj.getStr("orderTime")
+        (orderId, itemId, itemName, itemPrice, userName, orderTime)
+      }
     })
+      .filter(_.isSuccess)
+      .map(_.get)
       .foreachRDD { rdd =>
         rdd.foreachPartition { partitionOfRecords =>
           val conn = createConnection()
